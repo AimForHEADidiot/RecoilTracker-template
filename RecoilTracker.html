@@ -1,0 +1,98 @@
+ <!DOCTYPE html>
+ <html>
+    <head>
+        <title>RecoilTracker</title>
+		<style>
+		  body {background-color: Salmon;}
+        </style>
+    </head>
+	<body>
+        <h1 id="dogHeader" style="color: PapayaWhip;">RecoilTracker</h1>
+		<label style="color: PaleGoldenRod;"><b>Limit amount of entries?</b></label>
+		<input type="checkbox" id="chk1" name="chkLimitEntries" onchange="b_limitentries = !b_limitentries" unchecked><label for="chk1" style="color: PaleGoldenRod;">Enable</label>
+		<input type="number" id="i2" name="i_maxentries" style="width:35px" size="35" min="2" max="10000" value="10" onchange="i_maxentries = this.value"><br><br>
+		<label style="color: PaleGoldenRod;"><b>Prefix (ex: date)</b></label>
+		<input type="text" id="t1" name="s_prefix" value="" onchange="s_prefix = this.value"><br><br>
+        <li><label style="color: PaleGoldenRod;"><b>Weapon</b></label>
+            <input type="radio" id="r1" name="r_weapon" value="AK47" onclick="s_weapon = this.value"><label for="r1" style="color: PaleGoldenRod;">AK47</label>
+            <input type="radio" id="r2" name="r_weapon" value="M4A1-S" onclick="s_weapon = this.value"><label for="r2" style="color: PaleGoldenRod;">M4A1-S</label>
+            <input type="radio" id="r3" name="r_weapon" value="M4A4" onclick="s_weapon = this.value"><label for="r3" style="color: PaleGoldenRod;">M4A4</label>
+        </li><br>
+        <li><label style="color: PaleGoldenRod;"><b>Target</b></label>
+            <input type="radio" id="r4" name="r_target" value="Body" onclick="s_target = this.value"><label for="r4" style="color: PaleGoldenRod;">Body</label>
+            <input type="radio" id="r5" name="r_target" value="Head" onclick="s_target = this.value"><label for="r5" style="color: PaleGoldenRod;">Head</label>
+        </li><br>
+<label style="color: PaleGoldenRod;"><b>Hit-rate</b></label>
+            <input type="number" id="i1" name="i_hitrate" style="width:35px" size="35" min="0" max="100" maxlength="4" value="50" onchange="chkHitrate(this.value)">
+		<button type="button" id="dataBtn" onclick="AddData(s_prefix, s_weapon, s_target, i_hitrate)">Add data</button>
+		<button type="button" id="avgBtn" onclick="avgCalc(i_hitratedata)">Calc Avg</button>
+		<div class="results" id="avg">
+		</div>
+		<div class="results" id="results">
+		</div>
+		<div class="ghetto" id="footer">
+		  <br><br><label style="color: PaleGoldenRod;"><b>made by <a href="https://steamcommunity.com/id/angledemon/" style="color: PaleGoldenRod;">angledemon</a> @ <a href="https://steamcommunity.com/groups/headcrosshair" style="color: PaleGoldenRod;">HEAD+ GANG</a></b></label>
+		</div>
+        <script> 
+		    var b_limitentries = false;
+		    var i_maxentries = 10;
+			var s_weapon = "";
+			var s_target = "";
+			var s_prefix = "HEAD+";
+			var i_hitrate = 50;
+		    var i_datacount = 0;
+			const element_result = ['<p style="color: PaleGoldenRod;" id="result','">','</p>']
+			const i_hitratedata = [];
+			const dSplit = " | ";
+			
+			function AddData(sPfix, sWep, sAim, iRate)
+			{
+			    if (sWep == "") { return console.log("no weapon"); }
+				if (sAim == "") { return console.log("no target"); }
+			    if (b_limitentries == true) {
+				  if (i_datacount < i_maxentries) {
+				    i_hitratedata[i_datacount] = iRate;
+				    i_datacount += 1;
+				    document.getElementById("results").innerHTML += (element_result[0] + i_datacount + element_result[1] + (sPfix + dSplit + sWep + dSplit + sAim + dSplit + iRate + " %") + element_result[2]);
+					document.getElementById("dogHeader").innerHTML = ("RecoilTracker - " + Math.abs((i_datacount - i_maxentries)) + " of " + i_maxentries + " entries left :)")
+				  }
+				} else {
+				  i_hitratedata[i_datacount] = iRate;
+				  i_datacount += 1;
+				  document.getElementById("results").innerHTML += (element_result[0] + i_datacount + element_result[1] + (sPfix + dSplit + sWep + dSplit + sAim + dSplit + iRate + " %") + element_result[2]);
+				  document.getElementById("dogHeader").innerHTML = ("RecoilTracker - " + (i_datacount) + " data-entries submitted :-)")
+				}    
+			}
+			
+			function avgCalc(array_hitrate)
+			{
+			    if (array_hitrate.length > 0) {
+			      const answer = (getAvg(array_hitrate) + " %" + dSplit + array_hitrate.length + " data-entries")
+				  document.getElementById("avg").innerHTML = (element_result[0] + "ofAvg" + element_result[1] + (s_prefix + dSplit + s_weapon + dSplit + s_target + dSplit + answer) + element_result[2]);
+				}
+			}
+			
+			function chkHitrate(hitvalue) {
+			    if (hitvalue.length > 2 && hitvalue > 100) {
+				  do {
+				    hitvalue = Math.floor(Number(hitvalue) / 10);
+				  } 
+				  while (hitvalue > 100);
+				  i_hitrate = hitvalue;
+				  document.getElementById("i1").value = i_hitrate;
+				} else {
+				  i_hitrate = hitvalue;
+				}
+			}
+			
+			function getAvg(hitarray) {
+			    if (hitarray.length === 0) return 'Empty hitarray array';
+			    var total = 0;
+			    for(var i = 0; i < hitarray.length; i++) {
+			      total += Number(hitarray[i]);
+			    }
+			    return Number(total / hitarray.length);
+			}
+        </script>
+	</body>
+</html>
