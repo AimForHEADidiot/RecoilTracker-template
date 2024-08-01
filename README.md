@@ -3,12 +3,13 @@ Can be used in scenarios like [this](https://www.youtube.com/watch?v=R1bDqKgwg6k
 
 ### How to use:
 1. Download RecoilTracker.html / Copy its content and save it yourself
+   
 For ease, somewhere simple is adviced ala C:\ root or something
 
-2. Run CS2 and join training map
+3. Run CS2 and join training map
 SHIFT+TAB to enter steamoverlay
 
-3. Type "file:///" + <path-to-html-file> in browser & hit enter e.g. "file:///C:/RecoilTracker.html"
+4. Type "file:///" + path-to-html-file in browser & hit enter e.g. "file:///C:/RecoilTracker.html"
 
 EXTRA: You can change steam's homepage by going Steam -> Settings -> In-game -> Webbrowsers Homepage and never type it again.
 
